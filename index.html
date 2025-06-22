@@ -2,84 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>YTFlow – Float Your Music</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YTFlow Grid Player</title>
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #121212;
+      background: #111;
       color: #fff;
+      font-family: 'Poppins', sans-serif;
+      padding: 20px;
       text-align: center;
-      padding: 2rem;
     }
-    input {
-      padding: 10px;
-      width: 80%;
-      max-width: 500px;
-      border: none;
-      border-radius: 8px;
+    h1 {
       margin-bottom: 1rem;
-      font-size: 1rem;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #1db954;
-      border: none;
-      color: white;
-      border-radius: 6px;
+    .video-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .video-card {
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      width: 300px;
       cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .video-card:hover {
+      transform: scale(1.03);
     }
     iframe {
-      margin-top: 2rem;
       width: 100%;
-      max-width: 560px;
-      height: 315px;
-      border: none;
-      border-radius: 10px;
+      height: 170px;
     }
     #warning {
-      color: #ff6961;
-      font-size: 0.95rem;
+      color: #ff5c5c;
       margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>🎧 YTFlow – Float Your Music</h1>
-  <p>Paste your YouTube link below to play it in-browser.</p>
-  
-  <input id="yt-url" type="text" placeholder="Paste YouTube link here..." />
-  <br />
-  <button onclick="loadVideo()">Play</button>
-
+  <h1>🎶 YTFlow – Chill Beats</h1>
+  <div class="video-grid" id="videoGrid">
+    <!-- Videos inserted by JS -->
+  </div>
   <div id="warning"></div>
-  <div id="player"></div>
 
   <script>
-    function extractVideoId(url) {
-      const regExp = /(?:youtube\.com.*(?:\\?|&)v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-      const match = url.match(regExp);
-      return match ? match[1] : null;
-    }
+    const videos = [
+      { title: "Lo-fi Chill", id: "jfKfPfyJRdk" },
+      { title: "Synthwave 1", id: "MVPTGNGiI-4" },
+      { title: "No Copyright Beats", id: "mWRsgZuwf_8" },
+      { title: "Relax Music", id: "5qap5aO4i9A" },
+      { title: "Space Vibes", id: "DWcJFNfaw9c" },
+    ];
 
-    function loadVideo() {
-      const url = document.getElementById("yt-url").value;
-      const videoId = extractVideoId(url);
+    const grid = document.getElementById("videoGrid");
+    videos.forEach(video => {
+      grid.innerHTML += `
+        <div class="video-card">
+          <iframe
+            src="https://www.youtube.com/embed/${video.id}?autoplay=0&controls=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+          ></iframe>
+          <p style="margin: 10px;">${video.title}</p>
+        </div>`;
+    });
 
-      if (videoId) {
-        const iframe = `<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&controls=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-        document.getElementById("player").innerHTML = iframe;
-      } else {
-        alert("Invalid YouTube URL");
-      }
-    }
-
-    // Browser detection for background play tip
+    // Suggest better browsers
     const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     if (isChrome) {
       document.getElementById("warning").innerText =
-        "⚠️ Chrome blocks background playback. Use Brave or Firefox for music to continue when minimized.";
+        "⚠️ On Chrome mobile, videos may pause in background. Use Brave or Firefox for uninterrupted music!";
     }
   </script>
 </body>
